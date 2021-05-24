@@ -7,9 +7,9 @@ theTime = datetime.datetime.now().strftime(ISOTIMEFORMAT)
 Product_url = "https://store.lizhi.io/site/products/id/"
 id = input("请输入商品 ID：")
 url = Product_url + id + "?cid=53qvofdc&mtm_campaign=wechat&mtm_kwd=p" + theTime
-print("链接："+url)
+print("商品链接："+ url)
 # 引入处理图片的模块
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image
 import qrcode
 qr = qrcode.QRCode(
     version=1,
@@ -18,15 +18,17 @@ qr = qrcode.QRCode(
 )
 qr.add_data(url)
 img = qr.make_image()
-#img = qrcode.make(data=url)
-img.save("qrc.png")
+# 如果需要保存二维码图片，取消注释
+img.save(id + "二维码.png")
 img_180_180 = img.resize((180,180),Image.ANTIALIAS)
+# 模板图片下载链接 https://union.lizhi.io/partner/product/349/poster?cid=53qvofdc
+import wget
+dl_url = "https://union.lizhi.io/partner/product/" + id + "/poster?cid=53qvofdc"
+wget.download(dl_url, id + ".jpg")
 file_name = id + ".jpg"
-print("模板图："+file_name)
+print("模板图："+ file_name)
 bgimg = Image.open(file_name)
-#img = Image.open("qrcode.jpg")
 bgimg.paste(img_180_180,box=(760,172))
-#bgimg = bgimg.convert("RGB")
 bgimg.save(theTime+"_"+id+".png")
-print("恭喜🎉您，新的图片创建成功！")
+print("恭喜🎉，新的图片创建成功！")
 print("文件名："+ theTime+"_"+id+".png")
