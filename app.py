@@ -1,5 +1,6 @@
 # 获取链接后 6 位
 import datetime
+from os import name
 ISOTIMEFORMAT = '%y%m%d'
 theTime = datetime.datetime.now().strftime(ISOTIMEFORMAT)
 print(theTime)
@@ -12,6 +13,11 @@ print(url)
 from PIL import Image, ImageDraw, ImageFont
 import qrcode
 img = qrcode.make(data=url)
-with open('test.png', 'wb') as f:
-    img.save(f)
-
+img_180_180 = img.resize((180,180),Image.ANTIALIAS)
+file_name = id + ".jpg"
+print(file_name)
+bgimg = Image.open(file_name)
+#img = Image.open("qrcode.jpg")
+bgimg.paste(img_180_180,box=(760,172))
+#bgimg = bgimg.convert("RGB")
+bgimg.save(theTime+"-"+id+".png")
