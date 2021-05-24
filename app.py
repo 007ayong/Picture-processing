@@ -12,7 +12,15 @@ print(url)
 # 引入处理图片的模块
 from PIL import Image, ImageDraw, ImageFont
 import qrcode
-img = qrcode.make(data=url,fill_color="black")
+qr = qrcode.QRCode(
+    version=1,
+    error_correction=qrcode.constants.ERROR_CORRECT_L,
+    border=4,
+)
+qr.add_data(url)
+img = qr.make_image()
+#img = qrcode.make(data=url)
+img.save("qrc.png")
 img_180_180 = img.resize((180,180),Image.ANTIALIAS)
 file_name = id + ".jpg"
 print(file_name)
@@ -20,4 +28,4 @@ bgimg = Image.open(file_name)
 #img = Image.open("qrcode.jpg")
 bgimg.paste(img_180_180,box=(760,172))
 #bgimg = bgimg.convert("RGB")
-bgimg.save(theTime+"-"+id+".png")
+bgimg.save(theTime+"_"+id+".png")
