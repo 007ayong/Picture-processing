@@ -19,7 +19,7 @@ qr = qrcode.QRCode(
 qr.add_data(url)
 img = qr.make_image()
 # 如果需要保存二维码图片，取消注释
-img.save(id + "二维码.png")
+#img.save(id + "二维码.png")
 img_180_180 = img.resize((180,180),Image.ANTIALIAS)
 # 模板图片下载链接 https://union.lizhi.io/partner/product/349/poster?cid=53qvofdc
 import wget
