@@ -12,7 +12,7 @@ print(url)
 # 引入处理图片的模块
 from PIL import Image, ImageDraw, ImageFont
 import qrcode
-img = qrcode.make(data=url)
+img = qrcode.make(data=url,fill_color="black")
 img_180_180 = img.resize((180,180),Image.ANTIALIAS)
 file_name = id + ".jpg"
 print(file_name)
