@@ -1,5 +1,6 @@
-# 获取链接后 6 位
+import os
 import datetime
+# 获取链接后 6 位
 from os import name
 ISOTIMEFORMAT = '%y%m%d'
 theTime = datetime.datetime.now().strftime(ISOTIMEFORMAT)
@@ -24,6 +25,8 @@ img_180_180 = img.resize((180,180),Image.ANTIALIAS)
 # 模板图片下载链接 https://union.lizhi.io/partner/product/349/poster?cid=53qvofdc
 import wget
 dl_url = "https://union.lizhi.io/partner/product/" + id + "/poster?cid=53qvofdc"
+if not os.path.isfile("img"):
+    os.mkdir("img")   
 wget.download(dl_url,"./img/" + id + ".jpg")
 file_name = "./img/" + id + ".jpg"
 bgimg = Image.open(file_name)
@@ -31,5 +34,5 @@ bgimg.paste(img_180_180,box=(760,172))
 bgimg.save("./img/" + theTime + "_" + id + ".png")
 print("恭喜🎉，新的图片创建成功！")
 print("文件名："+ theTime + "_" + id + ".png")
-import os
+
 os.remove(file_name)
