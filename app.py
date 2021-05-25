@@ -32,3 +32,5 @@ bgimg.paste(img_180_180,box=(760,172))
 bgimg.save(theTime + "_" + id + ".png")
 print("恭喜🎉，新的图片创建成功！")
 print("文件名："+ theTime + "_" + id + ".png")
+import os
+os.remove(file_name)
