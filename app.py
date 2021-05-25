@@ -25,14 +25,16 @@ img_180_180 = img.resize((180,180),Image.ANTIALIAS)
 # 模板图片下载链接 https://union.lizhi.io/partner/product/349/poster?cid=53qvofdc
 import wget
 dl_url = "https://union.lizhi.io/partner/product/" + id + "/poster?cid=53qvofdc"
-if not os.path.isfile("img"):
-    os.mkdir("img")   
+if os.path.exists("img"):
+    print ("图像文件夹已存在")
+else:
+    os.mkdir("img")
+    print ("已创建图像文件夹")
 wget.download(dl_url,"./img/" + id + ".jpg")
 file_name = "./img/" + id + ".jpg"
 bgimg = Image.open(file_name)
-bgimg.paste(img_180_180,box=(760,172))
+bgimg.paste(img_180_180,box=(760,172))、
 bgimg.save("./img/" + theTime + "_" + id + ".png")
 print("恭喜🎉，新的图片创建成功！")
 print("文件名："+ theTime + "_" + id + ".png")
-
 os.remove(file_name)
