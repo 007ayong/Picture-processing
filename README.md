@@ -13,11 +13,19 @@
 # 用法
 
 1. 使用 Python3 运行程序，输入商品 ID
-2. 自动下载原图片，生成二维码并替换好二维码，自动命名为`time`_`id`.png
+
+```shell
+python3 app.py
+```
+
+2. 自动下载原图片，生成二维码并替换好二维码，以 `date_文件名.png` 保存
 3. 最后将自动删除原图片
 
 # 说明
 
-- 本程序会读取系统时间，所以无比保证时间正确才可以；
-- 需要用到的库`Pillow`、`qrcode`、`wget`，使用 `pip install` 安装即可。
+- 本程序会读取系统时间，所以请在当天使用才能生成正确的链接及二维码；
+
+- 需要用到的库 `Pillow` `qrcode` `requests`，使用 `pip install Pillow qrcode requests` 命令安装即可。
+
+  
 
