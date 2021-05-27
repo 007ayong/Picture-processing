@@ -3,6 +3,11 @@ import datetime
 from PIL import Image
 import qrcode
 import requests
+def ceshi(id):
+    print(id)
+ids = input("请输入商品ID，如有多个请用逗号隔开：")
+id=ids.split()
+ceshi(list(id))
 ISOTIMEFORMAT = '%y%m%d'
 theTime = datetime.datetime.now().strftime(ISOTIMEFORMAT)
 # 链接 https://store.lizhi.io/site/products/id/31?cid=53qvofdc&mtm_campaign=wechat&mtm_kwd=p210413
