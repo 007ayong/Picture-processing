@@ -2,7 +2,6 @@ import os
 import datetime
 from PIL import Image
 import qrcode
-from os import name, path
 import requests
 ISOTIMEFORMAT = '%y%m%d'
 theTime = datetime.datetime.now().strftime(ISOTIMEFORMAT)
