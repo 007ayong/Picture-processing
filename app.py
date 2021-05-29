@@ -67,6 +67,6 @@ def change_qrcode(ids):
         bgimg.paste(img_180_180,box=(760,172))
         bgimg.save("./img/" + theTime + "_" + mould_name + ".png")
         print("\n恭喜🎉，新的图片创建成功！")
-        print("\n文件名："+ theTime + "_" + mould_name + ".png")
+        print("文件名："+ theTime + "_" + mould_name + ".png")
         os.remove(mould)
 change_qrcode(ids)
