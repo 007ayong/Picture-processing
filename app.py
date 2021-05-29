@@ -3,6 +3,14 @@ import datetime
 from PIL import Image
 import qrcode
 import requests
+import sys
+import time
+def progress_bar():
+    for i in range(1, 101):
+        print("\r", end="")
+        print("进行中: {}% ".format(i), "▋" * (i // 2), end="")
+        sys.stdout.flush()
+        time.sleep(0.01)
 datas = input("请输入商品 ID，以逗号隔开：")
 ids = datas.split(',')
 def change_qrcode(ids):
@@ -53,11 +61,12 @@ def change_qrcode(ids):
                     # 打开文件写入
                     with open('./img/'+ mould_name + '.jpg', 'wb') as f:
                         f.write(content)
+                    progress_bar()
         mould = "./img/" + mould_name + ".jpg"
         bgimg = Image.open(mould)
         bgimg.paste(img_180_180,box=(760,172))
         bgimg.save("./img/" + theTime + "_" + mould_name + ".png")
-        print("恭喜🎉，新的图片创建成功！")
-        print("文件名："+ theTime + "_" + mould_name + ".png")
+        print("\n恭喜🎉，新的图片创建成功！")
+        print("\n文件名："+ theTime + "_" + mould_name + ".png")
         os.remove(mould)
 change_qrcode(ids)
