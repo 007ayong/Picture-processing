@@ -1,0 +1,30 @@
+.content{
+    width: 1200px;
+    height: auto;
+    margin: 0 auto;
+    text-align: center;
+}
+.box{
+    display: flex;
+    margin: 0 3px;
+    justify-content: center;
+}
+.card{
+    display: flex;
+    width: 1000px;
+    height: 416px;
+    background-image: url(../static/bg.png);
+    background-color: rgb(246, 251, 253);
+    justify-content: space-between;
+}
+.left{
+    display: flex;
+}
+.icon{
+    width: 210px;
+    height: 210px;
+}
+.name{
+    font-size: 48px;
+    color: rgb(29, 29, 29);
+}
