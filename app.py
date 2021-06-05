@@ -70,3 +70,4 @@ def change_qrcode(ids):
         print("文件名："+ theTime + "_" + mould_name + ".png")
         os.remove(mould)
 change_qrcode(ids)
+os.system("pause")
