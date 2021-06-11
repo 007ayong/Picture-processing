@@ -1,3 +1,18 @@
+// ==UserScript==
+// @name         推广联盟卡片内容处理增强
+// @namespace    https://github.com/007ayong/Picture-processing
+// @version      0.1
+// @description  用于改价、替换二维码等操作
+// @author       阿永
+// @match        https://union.lizhi.io/panel/
+// @icon         https://union.lizhi.io/panel/favicon.ico
+// @grant        none
+// @require      https://static.runoob.com/assets/qrcode/qrcode.min.js
+// @require      https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js
+// @require      http://html2canvas.hertzen.com/dist/html2canvas.min.js
+// @require      https://cdn.bootcdn.net/ajax/libs/FileSaver.js/2.0.5/FileSaver.js
+// ==/UserScript==
+
 var mybutton,beasetag;
 mybutton = document.createElement("div");
 beasetag = document.querySelector("body");
