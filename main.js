@@ -34,7 +34,7 @@ console.log("系统时间：" + Curentdate());
 
 var qrcode_button = document.createElement("div");
 qrcode_button.innerHTML = "更改二维码";
-qrcode_button.style = "position:fixed;bottom:70px;right:15px;width:102px;height:40px;background:#f92e37;color:white;text-align:center;line-height:40px;cursor:pointer;border-radius:8%;z-index:9999;";
+qrcode_button.style = "position:fixed;bottom:74px;right:15px;width:102px;height:40px;background:#f92e37;color:white;text-align:center;line-height:40px;cursor:pointer;border-radius:8%;z-index:9999;";
 beasetag.appendChild(qrcode_button);
 qrcode_button.onclick = function change_code() {
     var image = document.getElementsByClassName("pt-17 pb-12 px-12 relative")[0].children[4];
@@ -52,5 +52,32 @@ qrcode_button.onclick = function change_code() {
         colorLight : "#ffffff",
         correctLevel : QRCode.CorrectLevel.L
     });
+}
+
+var save_button = document.createElement("div");
+save_button.innerHTML = "保存为图片";
+save_button.style = "position:fixed;bottom:131px;right:15px;width:102px;height:40px;background:#f92e37;color:white;text-align:center;line-height:40px;cursor:pointer;border-radius:8%;z-index:9999;";
+beasetag.appendChild(save_button);
+save_button.onclick = function screenshot() {
+    var card = document.getElementsByClassName("bg-no-repeat bg-center bg-contain px-18 py-20 mx-auto")[0];
+    var name = Curentdate().toString().substr(2) + "_" + document.getElementsByClassName("font-bold leading-none text-24")[0].innerHTML + "_qrcode";
+    var icon = document.getElementsByClassName("w-105 h-105")[0];
+    icon.setAttribute("crossorigin","anonymous");
+    icon.src += "?";
+    setTimeout(function() { 
+        html2canvas(card,{
+            height: 208,
+            useCORS:true
+           // width:1000,
+           // height:416
+        }).then(function(canvas) {
+            //document.body.appendChild(canvas);
+            canvas.toBlob(function(blob) {
+                saveAs(blob, name);
+             });
+        });
+     }, 10);
+    
+   
 }
 
