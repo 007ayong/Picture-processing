@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         推广联盟卡片内容处理增强
+// @name         推广联盟助手
 // @namespace    https://github.com/007ayong/Picture-processing
 // @version      0.1
 // @description  用于改价、替换二维码等操作
