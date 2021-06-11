@@ -4,6 +4,7 @@
 // @version      0.1
 // @description  用于改价、替换二维码等操作
 // @author       阿永
+// @updateURL    https://raw.githubusercontent.com/007ayong/Picture-processing/js/main.js
 // @match        https://union.lizhi.io/panel/
 // @icon         https://union.lizhi.io/panel/favicon.ico
 // @grant        none
