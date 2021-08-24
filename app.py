@@ -17,9 +17,10 @@ def change_qrcode(ids):
     for id in ids:
         ISOTIMEFORMAT = '%y%m%d'
         theTime = datetime.datetime.now().strftime(ISOTIMEFORMAT)
-        # 链接 https://store.lizhi.io/site/products/id/31?cid=53qvofdc&mtm_campaign=wechat&mtm_kwd=p210413
+        # 旧链接 https://store.lizhi.io/site/products/id/31?cid=53qvofdc&mtm_campaign=wechat&mtm_kwd=p210413
+        # 新链接 https://store.lizhi.io/site/products/id/31?cid=53qvofdc&hmsr=wechat&hmcu=p210823
         Product_url = "https://store.lizhi.io/site/products/id/"
-        url = Product_url + id + "?cid=53qvofdc&mtm_campaign=wechat&mtm_kwd=p" + theTime
+        url = Product_url + id + "?cid=53qvofdc&hmsr=wechat&hmcu=p" + theTime
         print("商品链接："+ url)
         qr = qrcode.QRCode(
             version=1,
