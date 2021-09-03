@@ -18,9 +18,9 @@ def change_qrcode(ids):
         ISOTIMEFORMAT = '%y%m%d'
         theTime = datetime.datetime.now().strftime(ISOTIMEFORMAT)
         # 旧链接 https://store.lizhi.io/site/products/id/31?cid=53qvofdc&mtm_campaign=wechat&mtm_kwd=p210413
-        # 新链接 https://store.lizhi.io/site/products/id/31?cid=53qvofdc&hmsr=wechat&hmcu=p210823
+        # 新链接 https://store.lizhi.io/site/products/id/31?cid=53qvofdc&hmsr=wechat&hmpl=p210903
         Product_url = "https://store.lizhi.io/site/products/id/"
-        url = Product_url + id + "?cid=53qvofdc&hmsr=wechat&hmcu=p" + theTime
+        url = Product_url + id + "?cid=53qvofdc&hmsr=wechat&hmpl=p" + theTime
         print("商品链接："+ url)
         qr = qrcode.QRCode(
             version=1,
@@ -67,7 +67,7 @@ def change_qrcode(ids):
         bgimg = Image.open(mould)
         bgimg.paste(img_180_180,box=(760,172))
         bgimg.save("./img/" + theTime + "_" + mould_name + ".png")
-        print("\n恭喜🎉，新的图片创建成功！")
+        print("\n恭喜，新的图片创建成功！")
         print("文件名："+ theTime + "_" + mould_name + ".png")
         os.remove(mould)
 change_qrcode(ids)
