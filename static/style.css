@@ -52,7 +52,7 @@ h1{
     border-radius: 25%;
 }
 .descript{
-    width: 580px;
+    width: 560px;
     height: 80px;
     padding-left: 40px;
     padding-top: 20px;
@@ -84,14 +84,15 @@ h2{
     font-weight: 600;
 }
 .right{
-    width: 450px;
+    /* width: 450px; */
+    margin-left: 130px;
 }
 .box{
     width: 230px;
     height: 340px;
     background: rgb(233, 238, 241);
     border-radius: 18px;
-    margin: 38px auto;
+    margin: 38px 0;
     position: relative;
 }
 .right-top{
