@@ -30,7 +30,7 @@ def NewCode(url):
         )
     qr.add_data(url)
     img = qr.make_image()
-    img_180_180=img.resize((180,180),Image.ANTIALIAS)
+    img_180_180=img.resize((180,180),Image.Resampling.LANCZOS)
     return img_180_180
 def filename(dl_url):
     r = requests.get(url=dl_url, headers=headers, stream=True, allow_redirects=False, timeout=10)
