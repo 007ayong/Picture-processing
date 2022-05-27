@@ -1,7 +1,6 @@
 # 引入date、os库
 import datetime
 import os
-from tabnanny import filename_only
 # 引入请求库
 import requests
 # 引入 images 库
