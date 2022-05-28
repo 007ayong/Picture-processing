@@ -42,6 +42,7 @@ jobs:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: ./dist/windows\app.exe
         asset_name: app-${{ github.ref }}.exe
+        asset_content_type: application/zip
 
 
 
