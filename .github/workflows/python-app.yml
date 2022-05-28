@@ -33,11 +33,11 @@ jobs:
         path: src/dist/windows/app.exe
 
     - name: Rename
-      run: mv "src/dist/windows/app.exe" "src/dist/windows/app-${{ github.ref }}.exe"
+      run: mv "src/dist/windows/app.exe" "src/dist/windows/app-${{ github.ref_name }}.exe"
 
     - name: Release
       uses: softprops/action-gh-release@v1
       if: startsWith(github.ref,'refs/tags/')
       with:
-        files: src/dist/windows/app-${{ github.ref }}.exe
+        files: src/dist/windows/app-${{ github.ref_name }}.exe
     
