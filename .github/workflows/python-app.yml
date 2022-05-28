@@ -24,6 +24,12 @@ jobs:
       uses: JackMcKew/pyinstaller-action-windows@main
       with:
         path: src
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: app.exe
+        path: src/dist/windows
+
     - name: Create a Release
       id: create_release
       uses: actions/create-release@v1
@@ -40,7 +46,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./dist/windows
+        asset_path: src/dist/windows
         asset_name: app-${{ github.ref }}.exe
         asset_content_type: application/zip
 
