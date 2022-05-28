@@ -5,9 +5,8 @@ name: Python application
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    tags:
+      - 'v*'
 
 permissions:
   contents: read
@@ -28,6 +27,25 @@ jobs:
       uses: JackMcKew/pyinstaller-action-windows@main
       with:
         path: src
+    - name: Create a Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+
+    - name: Upload Release Asset
+      id: upload_release_asset
+      uses: actions/release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.upload_url }}
+        asset_path: ./dist/windows\app.exe
+        asset_name: app-${{ github.ref }}.exe
+
 
 
     
