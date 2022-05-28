@@ -28,7 +28,7 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: app.exe
-        path: src/dist/windows/app.py
+        path: src/dist/windows/app.exe
 
     - name: Create a Release
       id: create_release
