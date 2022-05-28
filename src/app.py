@@ -9,6 +9,8 @@ from PIL import Image
 import qrcode
 # 引入pyperclip
 import pyperclip
+# 引入shutil
+import shutil
 
 
 # 判断当前目录下是否有临时缓存文件夹
@@ -60,9 +62,8 @@ for i in goods_id:
         # 将图像以 日期_filename 保存到临时文件夹
         with open('./tmp/' + date + "_" + filename, 'wb') as f:
             f.write(response.content)
-            # 每秒下载进度条
-            print("下载进度：" + str(goods_id.index(i) + 1) + "/" + str(len(goods_id)) + "  " + str(
-                round(goods_id.index(i) / len(goods_id) * 100, 2)) + "%")
+            # 打印下载进度
+            print("处理进度：" + str(goods_id.index(i) + 1) + "/" + str(len(goods_id)))
         # 将图片转换为PIL格式
         img = Image.open('./tmp/' + date + "_" + filename)
         # 生成180*180px的二维码，容错率为L
@@ -90,19 +91,19 @@ for i in goods_id:
             print("原文链接：" + qr_url)
             # 将qr_url复制到剪切板
             pyperclip.copy(qr_url)
-            # 停止
-            break
+            # 禁止跳出
+            input("已将原文链接复制到剪切板，按回车键退出")
 
     # 如果请求失败，则输出错误信息：图像源文件请求失败，请商品是否存在及商品ID是否正确
     else:
         print("图像源文件请求失败，请商品是否存在及商品ID是否正确")
 
 # 删除整个临时文件夹
-os.system('rm -rf ./tmp')
+shutil.rmtree('./tmp')
 # 如果商品ID数量大于1，则输出：原文链接：https://store.lizhi.io?cid=53qvofdc&hmsr=wechat&hmpl=p[日期]
 if len(goods_id) > 1:
     print("原文链接：https://store.lizhi.io?cid=53qvofdc&hmsr=wechat&hmpl=p" + date)
     # 将https://store.lizhi.io?cid=53qvofdc&hmsr=wechat&hmpl=p[日期]复制到剪切板
     pyperclip.copy("https://store.lizhi.io?cid=53qvofdc&hmsr=wechat&hmpl=p" + date)
     # 禁止跳出
-    input("请按回车键继续")
+    input("已将原文链接复制到剪切板，按回车键退出")
