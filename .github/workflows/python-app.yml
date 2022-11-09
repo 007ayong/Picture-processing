@@ -12,32 +12,29 @@ permissions:
 
 jobs:
   build:
-
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v3
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v3
+    - uses: actions/setup-python@v4
       with:
-        python-version: "3.10"
-    
-    - name: PyInstaller Windows
-      uses: JackMcKew/pyinstaller-action-windows@main
-      with:
-        path: src
+        python-version: '3.9'
+        cache: 'pip' # caching pip dependencies
+    - run: cd src/ && pip install -r requirements.txt
 
-    - uses: actions/upload-artifact@v2
-      with:
-        name: app.exe
-        path: src/dist/windows/app.exe
+    - name: install pyinstaller
+      run: pip install pyinstaller
+
+    - name: run pyinstaller
+      run: pyinstaller -F app.py
 
     - name: Rename
-      run: mv "src/dist/windows/app.exe" "src/dist/windows/app-${{ github.ref_name }}.exe"
+      run: mv "src/dist/windows/app.exe" "src/dist/windows/app_${{ github.ref_name }}.exe"
+      run: mv "src/app.py" "src/app_${{ github.ref_name }}.py"
 
     - name: Release
       uses: softprops/action-gh-release@v1
       if: startsWith(github.ref,'refs/tags/')
       with:
-        files: src/dist/windows/app-${{ github.ref_name }}.exe
-    
+        files: src/dist/windows/app_${{ github.ref_name }}.exe
+        files: src/app_${{ github.ref_name }}.py

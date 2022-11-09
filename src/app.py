@@ -19,8 +19,6 @@ if not os.path.exists('./tmp'):
 # 判断当前目录下是否有img文件夹
 if not os.path.exists('./img'):
     os.mkdir('./img')
-# 输入法切换为英文状态
-os.system('setxkbmap -layout us')
 # 输入商品ID
 goods_id = input("请输入商品ID (多个产品以,隔开):")
 # 判断输入是否包含中文逗号，如果有转换为英文逗号
@@ -47,8 +45,11 @@ goods_id = goods_id.split(",")
 for i in goods_id:
     # 定义图像链接为：https://union.lizhi.io/partner/product/[商品ID]/poster
     url = "https://union.lizhi.io/partner/product/" + i + "/poster?cid=53qvofdc"
+    # 设置忽略系统代理
+    session = requests.Session()
+    session.trust_env = False
     # 请求图像链接
-    response = requests.get(url)
+    response = session.get(url)
     # 如果请求成功
     if response.status_code == 200:
         # 从返回头获取图像文件名
@@ -104,6 +105,6 @@ shutil.rmtree('./tmp')
 if len(goods_id) > 1:
     print("原文链接：https://store.lizhi.io?cid=53qvofdc&hmsr=wechat&hmpl=p" + date)
     # 将https://store.lizhi.io?cid=53qvofdc&hmsr=wechat&hmpl=p[日期]复制到剪切板
-    pyperclip.copy("https://store.lizhi.io?cid=53qvofdc&hmsr=wechat&hmpl=p" + date)
+    pyperclip.copy("https://store.lizhi.io/?cid=53qvofdc&hmsr=wechat&hmpl=p" + date)
     # 禁止跳出
     input("已将原文链接复制到剪切板，按回车键退出")
