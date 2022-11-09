@@ -29,12 +29,12 @@ jobs:
       run: pyinstaller -F app.py
 
     - name: Rename
-      run: mv "src/dist/windows/app.exe" "src/dist/windows/app_${{ github.ref_name }}.exe"
-      run: mv "src/app.py" "src/app_${{ github.ref_name }}.py"
+      run: mv "src/dist/windows/app.exe" "src/dist/windows/app_${{ github.ref_name }}.exe" && mv "src/app.py" "src/app_${{ github.ref_name }}.py"
 
     - name: Release
       uses: softprops/action-gh-release@v1
       if: startsWith(github.ref,'refs/tags/')
       with:
-        files: src/dist/windows/app_${{ github.ref_name }}.exe
-        files: src/app_${{ github.ref_name }}.py
+        files: |
+        src/dist/windows/app_${{ github.ref_name }}.exe
+        src/app_${{ github.ref_name }}.py
