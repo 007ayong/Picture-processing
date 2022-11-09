@@ -26,7 +26,7 @@ jobs:
       run: pip install pyinstaller
 
     - name: run pyinstaller
-      run: pyinstaller -F app.py
+      run: pyinstaller -F "src/app.py"
 
     - name: Rename
       run: mv "src/dist/windows/app.exe" "src/dist/windows/app_${{ github.ref_name }}.exe" && mv "src/app.py" "src/app_${{ github.ref_name }}.py"
