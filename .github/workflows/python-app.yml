@@ -29,7 +29,7 @@ jobs:
       run: pyinstaller -F "src/app.py"
 
     - name: Rename
-      run: mv "dist/windows/app.exe" "dist/app_${{ github.ref_name }}.exe" && mv "src/app.py" "src/app_${{ github.ref_name }}.py"
+      run: mv "dist/app.exe" "dist/app_${{ github.ref_name }}.exe" && mv "src/app.py" "src/app_${{ github.ref_name }}.py"
 
     - name: Release
       uses: softprops/action-gh-release@v1
