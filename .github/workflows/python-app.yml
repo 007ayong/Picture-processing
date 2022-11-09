@@ -36,5 +36,5 @@ jobs:
       if: startsWith(github.ref,'refs/tags/')
       with:
         files: |
-        src/dist/windows/app_${{ github.ref_name }}.exe
-        src/app_${{ github.ref_name }}.py
+          src/dist/windows/app_${{ github.ref_name }}.exe
+          src/app_${{ github.ref_name }}.py
