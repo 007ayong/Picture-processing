@@ -1,16 +1,26 @@
-# 引入date、os库
 import datetime
 import os
-# 引入请求库
+import sys
 import requests
-# 引入 images 库
 from PIL import Image
-# 引入qrcode
 import qrcode
-# 引入pyperclip
 import pyperclip
-# 引入shutil
 import shutil
+import webbrowser
+
+version = "2.1.0"
+# 通过 GitHub API 获取远端版本号
+response = requests.get("https://api.github.com/repos/007ayong/Picture-processing/releases/latest")
+remote_version = response.json()["tag_name"]
+remote_version = remote_version.lstrip("v")
+
+# 比较 version1 和 version2 的大小
+if remote_version > version:
+    print(" GitHub 有新版本，请前往更新")
+    # 打开指定的网址
+    url = "https://github.com/007ayong/Picture-processing/releases/latest"
+    webbrowser.open(url)
+    sys.exit()
 
 
 # 判断当前目录下是否有临时缓存文件夹
@@ -64,7 +74,7 @@ for i in goods_id:
         with open('./tmp/' + date + "_" + filename, 'wb') as f:
             f.write(response.content)
             # 打印下载进度
-            print("处理进度：" + str(goods_id.index(i) + 1) + "/" + str(len(goods_id)))
+            print("正在处理：" + str(goods_id.index(i) + 1) + "/" + str(len(goods_id))+filename)
         # 将图片转换为PIL格式
         img = Image.open('./tmp/' + date + "_" + filename)
         # 生成180*180px的二维码，容错率为L
@@ -103,7 +113,7 @@ for i in goods_id:
 shutil.rmtree('./tmp')
 # 如果商品ID数量大于1，则输出：原文链接：https://store.lizhi.io?cid=53qvofdc&hmsr=wechat&hmpl=p[日期]
 if len(goods_id) > 1:
-    print("原文链接：https://store.lizhi.io?cid=53qvofdc&hmsr=wechat&hmpl=p" + date)
+    print("原文链接：https://store.lizhi.io/?cid=53qvofdc&hmsr=wechat&hmpl=p" + date)
     # 将https://store.lizhi.io?cid=53qvofdc&hmsr=wechat&hmpl=p[日期]复制到剪切板
     pyperclip.copy("https://store.lizhi.io/?cid=53qvofdc&hmsr=wechat&hmpl=p" + date)
     # 禁止跳出
