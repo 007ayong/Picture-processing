@@ -7,21 +7,29 @@ import qrcode
 import pyperclip
 import shutil
 import webbrowser
+import subprocess
+import platform
 
-version = "2.1.0"
+
+version = "2.1.1"
 # 通过 GitHub API 获取远端版本号
-response = requests.get("https://api.github.com/repos/007ayong/Picture-processing/releases/latest")
-remote_version = response.json()["tag_name"]
-remote_version = remote_version.lstrip("v")
 
-# 比较 version1 和 version2 的大小
-if remote_version > version:
-    print(" GitHub 有新版本，请前往更新")
-    # 打开指定的网址
-    url = "https://github.com/007ayong/Picture-processing/releases/latest"
-    webbrowser.open(url)
-    sys.exit()
+response = requests.get(
+    "https://api.github.com/repos/007ayong/Picture-processing/releases/latest"
+)
 
+if response.status_code == 200:
+    remote_version = response.json()["tag_name"]
+    remote_version = remote_version.lstrip("v")
+    # 比较 version1 和 version2 的大小
+    if remote_version > version:
+        print(" GitHub 有新版本，请前往更新")
+        # 打开指定的网址
+        url = "https://github.com/007ayong/Picture-processing/releases/latest"
+        webbrowser.open(url)
+        sys.exit()
+else:
+    print('提醒：检查版本更新失败……')
 
 # 判断当前目录下是否有临时缓存文件夹
 if not os.path.exists('./tmp'):
@@ -61,7 +69,7 @@ for i in goods_id:
     # 请求图像链接
     response = session.get(url)
     # 如果请求成功
-    if response.status_code == 200:
+    if response.headers['Content-Type'] == 'image/png,application/octet-stream':
         # 从返回头获取图像文件名
         filename = response.headers['Content-Disposition'].split('=')[1]
         # 按“”分割，取第二段文件名
@@ -107,14 +115,24 @@ for i in goods_id:
 
     # 如果请求失败，则输出错误信息：图像源文件请求失败，请商品是否存在及商品ID是否正确
     else:
-        print("图像源文件请求失败，请商品是否存在及商品ID是否正确")
+        input("错误：图像源文件请求失败，请检查商品是否存在及商品ID是否正确")
+        sys.exit()
 
 # 删除整个临时文件夹
 shutil.rmtree('./tmp')
-# 如果商品ID数量大于1，则输出：原文链接：https://store.lizhi.io?cid=53qvofdc&hmsr=wechat&hmpl=p[日期]
+
+# Get the operating system name
+os_name = platform.system()
+
+# Use the appropriate command to open the folder
+if os_name == 'Windows':
+    subprocess.Popen(r'explorer img')
+elif os_name == 'Darwin':
+    subprocess.Popen(['open', 'img'])
+# 如果商品ID数量大于1，则输出：原文链接：https://store.lizhi.io/?cid=53qvofdc&hmsr=wechat&hmpl=p[日期]
 if len(goods_id) > 1:
     print("原文链接：https://store.lizhi.io/?cid=53qvofdc&hmsr=wechat&hmpl=p" + date)
-    # 将https://store.lizhi.io?cid=53qvofdc&hmsr=wechat&hmpl=p[日期]复制到剪切板
+    # 将https://store.lizhi.io/?cid=53qvofdc&hmsr=wechat&hmpl=p[日期]复制到剪切板
     pyperclip.copy("https://store.lizhi.io/?cid=53qvofdc&hmsr=wechat&hmpl=p" + date)
     # 禁止跳出
     input("已将原文链接复制到剪切板，按回车键退出")
