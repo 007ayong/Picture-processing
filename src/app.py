@@ -11,7 +11,7 @@ import subprocess
 import platform
 
 
-version = "2.1.1"
+version = "2.1.2"
 # 通过 GitHub API 获取远端版本号
 
 response = requests.get(
@@ -47,14 +47,15 @@ if goods_id == "":
     print("商品 ID 不能为空")
     exit()
 
-# 输入日期(yyMMDD)
-date = input("请输入日期(yyMMDD):")
-# 如果日期输入为空
-if date == "":
-    # 输入提示“将默认使用当前系统日期”
-    print("已默认使用当前系统日期")
-    # 则设置为当前日期，格式为yyMMDD
-    date = datetime.datetime.now().strftime("%y%m%d")
+while True:
+    date = input("请输入日期(例如230214): ")
+    if not date:
+        print("已默认使用当前系统日期")
+        date = datetime.datetime.now().strftime("%y%m%d")
+        break
+    if len(date) == 6 and date.isdigit():
+        break
+    print("日期格式有误，请输入 6 位数字")
 
 # 将输入的商品ID以“,”分割
 goods_id = goods_id.split(",")
