@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 import os
 import sys
 import requests
@@ -11,7 +11,7 @@ import subprocess
 import platform
 
 
-version = "2.1.2"
+version = "2.1.3"
 # 通过 GitHub API 获取远端版本号
 
 response = requests.get(
@@ -37,6 +37,24 @@ if not os.path.exists('./tmp'):
 # 判断当前目录下是否有img文件夹
 if not os.path.exists('./img'):
     os.mkdir('./img')
+# 获取当前日期
+current_date = datetime.now().date()
+# 遍历img文件夹中的文件
+for filename in os.listdir('./img'):
+    file_path = os.path.join('./img', filename)
+    # 检查文件的创建日期
+    if os.path.isfile(file_path):
+        created_time_timestamp = os.path.getctime(file_path)
+        created_time = datetime.fromtimestamp(created_time_timestamp).date()
+        
+        # 计算文件创建日期与当前日期的差距
+        days_difference = (current_date - created_time).days
+        
+        # 如果文件创建日期在7天前，删除文件
+        if days_difference >= 7:
+            os.remove(file_path)
+            print(f"已删除文件: {filename}")
+
 # 输入商品ID
 goods_id = input("请输入商品ID (多个产品以,隔开):")
 # 判断输入是否包含中文逗号，如果有转换为英文逗号
@@ -48,10 +66,11 @@ if goods_id == "":
     exit()
 
 while True:
-    date = input("请输入日期(例如230214): ")
+    current_date = datetime.now().strftime("%y%m%d")
+    date = input(f"请输入日期(例如{current_date}): ")
     if not date:
         print("已默认使用当前系统日期")
-        date = datetime.datetime.now().strftime("%y%m%d")
+        date = current_date
         break
     if len(date) == 6 and date.isdigit():
         break
@@ -67,58 +86,71 @@ for i in goods_id:
     # 设置忽略系统代理
     session = requests.Session()
     session.trust_env = False
-    # 请求图像链接
-    response = session.get(url)
-    # 如果请求成功
-    if response.headers['Content-Type'] == 'image/png,application/octet-stream':
-        # 从返回头获取图像文件名
-        filename = response.headers['Content-Disposition'].split('=')[1]
-        # 按“”分割，取第二段文件名
-        filename = filename.split('"')[1]
-        # 按.分割，去掉后缀
-        filename = filename.split('.')[0]
-        # 将文件名使用 raw_uncode_escape 转义
-        filename = filename.encode('raw_unicode_escape').decode('utf-8')
-        # 将图像以 日期_filename 保存到临时文件夹
-        with open('./tmp/' + date + "_" + filename, 'wb') as f:
-            f.write(response.content)
-            # 打印下载进度
-            print("正在处理：" + str(goods_id.index(i) + 1) + "/" + str(len(goods_id))+filename)
-        # 将图片转换为PIL格式
-        img = Image.open('./tmp/' + date + "_" + filename)
-        # 生成180*180px的二维码，容错率为L
-        qr = qrcode.QRCode(
-            version=1,
-            error_correction=qrcode.constants.ERROR_CORRECT_L,
-            box_size=10,
-            border=4,
-        )
-        # 定义二维码链接为 https://store.lizhi.io/site/products/id/[商品ID]?cid=53qvofdc&hmsr=wechat&hmpl=p[日期]
-        qr_url = "https://store.lizhi.io/site/products/id/" + i + "?cid=53qvofdc&hmsr=wechat&hmpl=p" + date
-        # 将二维码内容设置为：
-        qr.add_data(qr_url)
-        # 生成二维码，并更改图像大小为180*180px
-        qr.make_image()
-        # 图像尺寸设置为180*180px
-        code_img = qr.make_image(fill_color="black", back_color="white").resize((180, 180))
-        # 将code_img贴到图片上760,172位置
-        img.paste(code_img, (760, 172))
-        # 图片以png格式保存到 img 文件夹
-        img.save('./img/' + date + "_" + filename + '.png', 'PNG')
-        
-        # 如果商品ID只有1个，则输出：原文链接：qr_url
-        if len(goods_id) == 1:
-            print("原文链接：" + qr_url)
-            # 将qr_url复制到剪切板
-            pyperclip.copy(qr_url)
-            # 禁止跳出
-            input("已将原文链接复制到剪切板，按回车键退出")
+    try:
+        # 请求图像链接
+        response = session.get(url)
+        response.raise_for_status()  # 如果请求失败，将引发异常
 
-    # 如果请求失败，则输出错误信息：图像源文件请求失败，请商品是否存在及商品ID是否正确
-    else:
-        input("错误：图像源文件请求失败，请检查商品是否存在及商品ID是否正确")
-        sys.exit()
-
+        # 如果请求成功
+        if response.headers['Content-Type'] == 'image/png,application/octet-stream':
+            # 从返回头获取图像文件名
+            filename = response.headers['Content-Disposition'].split('=')[1]
+            # 按“”分割，取第二段文件名
+            filename = filename.split('"')[1]
+            # 按.分割，去掉后缀
+            filename = filename.split('.')[0]
+            # 将文件名使用 raw_uncode_escape 转义
+            filename = filename.encode('raw_unicode_escape').decode('utf-8')
+            # 将图像以 日期_filename 保存到临时文件夹
+            with open('./tmp/' + date + "_" + filename, 'wb') as f:
+                f.write(response.content)
+                # 打印下载进度
+                print("正在处理：" + str(goods_id.index(i) + 1) + "/" + str(len(goods_id)) + " " +filename)
+            
+            # 将图片转换为PIL格式
+            img = Image.open('./tmp/' + date + "_" + filename)
+            # 生成180*180px的二维码，容错率为L
+            qr = qrcode.QRCode(
+                version=1,
+                error_correction=qrcode.constants.ERROR_CORRECT_L,
+                box_size=10,
+                border=4,
+            )
+            # 定义二维码链接为 https://store.lizhi.io/site/products/id/[商品ID]?cid=53qvofdc&hmsr=wechat&hmpl=p[日期]
+            qr_url = "https://store.lizhi.io/site/products/id/" + i + "?cid=53qvofdc&hmsr=wechat&hmpl=p" + date
+            # 将二维码内容设置为：
+            qr.add_data(qr_url)
+            # 生成二维码，并更改图像大小为180*180px
+            qr.make_image()
+            # 图像尺寸设置为180*180px
+            code_img = qr.make_image(fill_color="black", back_color="white").resize((180, 180))
+            # 将code_img贴到图片上760,172位置
+            img.paste(code_img, (760, 172))
+            # 图片以png格式保存到 img 文件夹
+            img.save('./img/' + date + "_" + filename + '.png', 'PNG')
+            
+            # 如果商品ID只有1个，则输出：原文链接：qr_url
+            if len(goods_id) == 1:
+                print("原文链接：" + qr_url)
+                # 将qr_url复制到剪切板
+                pyperclip.copy(qr_url)
+                # 禁止跳出
+                input("已将原文链接复制到剪切板，按回车键退出")
+        else:
+            try:
+                json_response = response.json()
+                if 'message' in json_response and 'error' in json_response['message']:
+                    error_message = json_response['message']['error']
+                    print(f"错误：图像源文件请求失败，错误信息：{error_message}")
+                else:
+                    print("未能解析错误信息")
+            except ValueError:
+                print("错误：无法解析 JSON 响应")
+    
+    except requests.exceptions.RequestException as e:
+        # 捕获请求异常，输出错误信息，跳过错误的商品ID
+        print(f"请求商品ID {i} 时发生异常：{e}")
+        continue
 # 删除整个临时文件夹
 shutil.rmtree('./tmp')
 
