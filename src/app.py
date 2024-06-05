@@ -11,15 +11,15 @@ import subprocess
 import platform
 
 
-version = "2.1.3"
-# 通过 GitHub API 获取远端版本号
+version = "2.1.4"
+# 通过 Gitee API 获取远端版本号
 
 response = requests.get(
-    "https://api.github.com/repos/007ayong/Picture-processing/releases/latest"
+    "https://gitee.com/api/v5/repos/ayong007/Picture-processing/tags"
 )
 
 if response.status_code == 200:
-    remote_version = response.json()["tag_name"]
+    remote_version = response.json()[0]["name"]
     remote_version = remote_version.lstrip("v")
     # 比较 version1 和 version2 的大小
     if remote_version > version:
@@ -116,8 +116,8 @@ for i in goods_id:
                 box_size=10,
                 border=4,
             )
-            # 定义二维码链接为 https://store.lizhi.io/site/products/id/[商品ID]?cid=53qvofdc&hmsr=wechat&hmpl=p[日期]
-            qr_url = "https://store.lizhi.io/site/products/id/" + i + "?cid=53qvofdc&hmsr=wechat&hmpl=p" + date
+            # 定义二维码链接为 https://lizhi.shop/site/products/id/[商品ID]?cid=53qvofdc&hmsr=wechat&hmpl=p[日期]
+            qr_url = "https://lizhi.shop/site/products/id/" + i + "?cid=53qvofdc&hmsr=wechat&hmpl=p" + date
             # 将二维码内容设置为：
             qr.add_data(qr_url)
             # 生成二维码，并更改图像大小为180*180px
@@ -162,10 +162,10 @@ if os_name == 'Windows':
     subprocess.Popen(r'explorer img')
 elif os_name == 'Darwin':
     subprocess.Popen(['open', 'img'])
-# 如果商品ID数量大于1，则输出：原文链接：https://store.lizhi.io/?cid=53qvofdc&hmsr=wechat&hmpl=p[日期]
+# 如果商品ID数量大于1，则输出：原文链接：https://lizhi.shop/?cid=53qvofdc&hmsr=wechat&hmpl=p[日期]
 if len(goods_id) > 1:
-    print("原文链接：https://store.lizhi.io/?cid=53qvofdc&hmsr=wechat&hmpl=p" + date)
-    # 将https://store.lizhi.io/?cid=53qvofdc&hmsr=wechat&hmpl=p[日期]复制到剪切板
-    pyperclip.copy("https://store.lizhi.io/?cid=53qvofdc&hmsr=wechat&hmpl=p" + date)
+    print("原文链接：https://lizhi.shop/?cid=53qvofdc&hmsr=wechat&hmpl=p" + date)
+    # 将https://lizhi.shop/?cid=53qvofdc&hmsr=wechat&hmpl=p[日期]复制到剪切板
+    pyperclip.copy("https://lizhi.shop/?cid=53qvofdc&hmsr=wechat&hmpl=p" + date)
     # 禁止跳出
     input("已将原文链接复制到剪切板，按回车键退出")
